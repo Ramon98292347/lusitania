@@ -4,7 +4,9 @@ import {
   Bell,
   BedDouble,
   CalendarDays,
+  Bot,
   Check,
+  ChevronDown,
   Clock3,
   ChevronLeft,
   ChevronRight,
@@ -19,6 +21,12 @@ import {
 } from 'lucide-react'
 import { links } from './config/links'
 import { quickItems, type GuideItem } from './data/guideData'
+import {
+  chatSuggestions,
+  createInitialChatMessages,
+  getAssistantReply,
+  type ChatMessage,
+} from './data/chatKnowledge'
 import './styles.css'
 
 const photos = {
@@ -72,6 +80,9 @@ function App() {
   const [copied, setCopied] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
   const [currentTime, setCurrentTime] = useState(() => formatCurrentTime())
+  const [showChat, setShowChat] = useState(false)
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => createInitialChatMessages())
+  const [chatInput, setChatInput] = useState('')
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -94,6 +105,26 @@ function App() {
     } catch {
       setCopied(false)
     }
+  }
+
+  const sendChatMessage = (message: string) => {
+    const trimmed = message.trim()
+    if (!trimmed) return
+
+    const userMessage: ChatMessage = {
+      id: crypto.randomUUID(),
+      role: 'user',
+      text: trimmed,
+    }
+
+    const assistantMessage: ChatMessage = {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      text: getAssistantReply(trimmed),
+    }
+
+    setChatMessages((current) => [...current, userMessage, assistantMessage])
+    setChatInput('')
   }
 
   return (
@@ -184,6 +215,21 @@ function App() {
         </section>
       </main>
 
+      <button
+        type="button"
+        className="floating-chat-button"
+        onClick={() => setShowChat(true)}
+        aria-label="Abrir atendente virtual"
+      >
+        <span className="floating-chat-icon">
+          <Bot size={22} />
+        </span>
+        <span className="floating-chat-copy">
+          <strong>Atendente</strong>
+          <small>Chat online</small>
+        </span>
+      </button>
+
       <section className="benefits-strip">
         {bottomBenefits.map(([title, text]) => (
           <div key={title} className="benefit">
@@ -238,6 +284,66 @@ function App() {
                 </button>
               ))}
             </div>
+          </section>
+        </div>
+      )}
+
+      {showChat && (
+        <div className="modal-backdrop" onClick={() => setShowChat(false)}>
+          <section className="chat-panel" onClick={(event) => event.stopPropagation()}>
+            <header className="chat-header">
+              <div className="chat-header-copy">
+                <p className="notification-eyebrow">Atendente virtual</p>
+                <h3>Lusitania Chat</h3>
+                <span>Respostas sobre hospedagem, acomodações e reservas.</span>
+              </div>
+              <button className="back-button" onClick={() => setShowChat(false)} aria-label="Fechar chat" type="button">
+                <ChevronDown size={18} />
+              </button>
+            </header>
+
+            <div className="chat-messages">
+              {chatMessages.map((message) => (
+                <article key={message.id} className={`chat-bubble chat-bubble-${message.role}`}>
+                  {message.role === 'assistant' && (
+                    <span className="chat-avatar">
+                      <Bot size={16} />
+                    </span>
+                  )}
+                  <div>
+                    <strong>{message.role === 'assistant' ? 'Atendente' : 'Você'}</strong>
+                    <ChatMessageBody text={message.text} />
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="chat-suggestions">
+              {chatSuggestions.map((suggestion) => (
+                <button key={suggestion} type="button" className="chat-chip" onClick={() => sendChatMessage(suggestion)}>
+                  {suggestion}
+                </button>
+              ))}
+            </div>
+
+            <form
+              className="chat-form"
+              onSubmit={(event) => {
+                event.preventDefault()
+                sendChatMessage(chatInput)
+              }}
+            >
+              <textarea
+                className="chat-input"
+                value={chatInput}
+                onChange={(event) => setChatInput(event.target.value)}
+                placeholder="Digite sua dúvida sobre a pousada..."
+                rows={3}
+              />
+              <button type="submit" className="chat-send-button">
+                Enviar
+              </button>
+            </form>
           </section>
         </div>
       )}
@@ -392,6 +498,30 @@ function NavCard({
       <span className="nav-title">{title}</span>
       <span className="nav-thumb-icon">{icon}</span>
     </a>
+  )
+}
+
+function ChatMessageBody({ text }: { text: string }) {
+  const lines = text.split('\n').filter(Boolean)
+
+  return (
+    <div className="chat-message-body">
+      {lines.map((line) => {
+        const urlMatch = line.match(/https?:\/\/\S+/)
+
+        if (urlMatch) {
+          const url = urlMatch[0]
+          return (
+            <a key={`${line}-${url}`} href={url} target="_blank" rel="noreferrer" className="chat-link-button">
+              Abrir link
+              <ChevronRight size={16} />
+            </a>
+          )
+        }
+
+        return <p key={line}>{line}</p>
+      })}
+    </div>
   )
 }
 

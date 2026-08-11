@@ -1,4 +1,4 @@
-import { answerHotelChat } from '../server/chatService.ts'
+import { answerHotelChat } from '../server/chatService'
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {

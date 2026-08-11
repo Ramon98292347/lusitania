@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import { acomodacoes } from '../src/data/accommodations.ts'
+import { acomodacoes } from '../src/data/accommodations'
 
 export async function answerHotelChat(question: string) {
   const apiKey = process.env.OPENAI_API_KEY

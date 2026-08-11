@@ -26,6 +26,7 @@ import {
   chatSuggestions,
   createInitialChatMessages,
   getAssistantReply,
+  type ChatResolution,
   type ChatMessage,
 } from './data/chatKnowledge'
 import './styles.css'
@@ -76,6 +77,7 @@ function App() {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => createInitialChatMessages())
   const [chatInput, setChatInput] = useState('')
   const [chatBodyElement, setChatBodyElement] = useState<HTMLDivElement | null>(null)
+  const [chatLoading, setChatLoading] = useState(false)
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -109,9 +111,9 @@ function App() {
     }
   }
 
-  const sendChatMessage = (message: string) => {
+  const sendChatMessage = async (message: string) => {
     const trimmed = message.trim()
-    if (!trimmed) return
+    if (!trimmed || chatLoading) return
 
     const userMessage: ChatMessage = {
       id: crypto.randomUUID(),
@@ -119,14 +121,56 @@ function App() {
       text: trimmed,
     }
 
-    const assistantMessage: ChatMessage = {
-      id: crypto.randomUUID(),
-      role: 'assistant',
-      text: getAssistantReply(trimmed),
+    setChatMessages((current) => [...current, userMessage])
+    setChatInput('')
+
+    const resolution: ChatResolution = getAssistantReply(trimmed)
+
+    if (resolution.kind === 'local') {
+      const assistantMessage: ChatMessage = {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        text: resolution.text,
+      }
+
+      setChatMessages((current) => [...current, assistantMessage])
+      return
     }
 
-    setChatMessages((current) => [...current, userMessage, assistantMessage])
-    setChatInput('')
+    setChatLoading(true)
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: trimmed }),
+      })
+
+      const data = await response.json()
+
+      const assistantMessage: ChatMessage = {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        text:
+          typeof data?.message === 'string' && data.message.trim()
+            ? data.message
+            : 'Nao encontrei essa informacao nos documentos da pousada. Para confirmar, fale com a recepcao pelo WhatsApp.',
+      }
+
+      setChatMessages((current) => [...current, assistantMessage])
+    } catch {
+      const assistantMessage: ChatMessage = {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        text: 'Nao consegui consultar os documentos agora. Para ajuda imediata, fale com a recepcao pelo WhatsApp.',
+      }
+
+      setChatMessages((current) => [...current, assistantMessage])
+    } finally {
+      setChatLoading(false)
+    }
   }
 
   return (
@@ -318,11 +362,31 @@ function App() {
                   </div>
                 </article>
               ))}
+
+              {chatLoading && (
+                <article className="chat-bubble chat-bubble-assistant">
+                  <span className="chat-avatar">
+                    <Bot size={16} />
+                  </span>
+                  <div>
+                    <strong>Atendente</strong>
+                    <div className="chat-message-body">
+                      <p>Consultando os documentos da pousada...</p>
+                    </div>
+                  </div>
+                </article>
+              )}
             </div>
 
             <div className="chat-suggestions">
               {chatSuggestions.map((suggestion) => (
-                <button key={suggestion} type="button" className="chat-chip" onClick={() => sendChatMessage(suggestion)}>
+                <button
+                  key={suggestion}
+                  type="button"
+                  className="chat-chip"
+                  onClick={() => void sendChatMessage(suggestion)}
+                  disabled={chatLoading}
+                >
                   {suggestion}
                 </button>
               ))}
@@ -332,7 +396,7 @@ function App() {
               className="chat-form"
               onSubmit={(event) => {
                 event.preventDefault()
-                sendChatMessage(chatInput)
+                void sendChatMessage(chatInput)
               }}
             >
               <textarea
@@ -341,9 +405,10 @@ function App() {
                 onChange={(event) => setChatInput(event.target.value)}
                 placeholder="Digite sua dúvida sobre a pousada..."
                 rows={3}
+                disabled={chatLoading}
               />
-              <button type="submit" className="chat-send-button">
-                Enviar
+              <button type="submit" className="chat-send-button" disabled={chatLoading}>
+                {chatLoading ? 'Consultando...' : 'Enviar'}
               </button>
             </form>
           </section>

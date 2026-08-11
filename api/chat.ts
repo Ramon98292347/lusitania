@@ -26,7 +26,7 @@ export default async function handler(req: any, res: any) {
     console.error('OpenAI chat error', error)
 
     return res.status(500).json({
-      message: 'Nao consegui consultar os documentos agora. Por favor, fale com a recepcao pelo WhatsApp para receber ajuda.',
+      message: 'Não consegui consultar os documentos agora. Por favor, fale com a recepção pelo WhatsApp para receber ajuda.',
     })
   }
 }

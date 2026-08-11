@@ -46,11 +46,11 @@ const cardsBottom = quickItems.slice(3)
 
 const bottomBenefits = [
   ['Conforto', 'Ambientes acolhedores'],
-  ['Natureza', 'Ampla area verde em Pedra Azul'],
+  ['Natureza', 'Ampla área verde em Pedra Azul'],
   ['Tranquilidade', 'Para descansar e aproveitar'],
   ['Hospitalidade', 'Atendimento com carinho'],
-  ['Seguranca', 'Sua seguranca e nossa prioridade'],
-  ['Experiencia', 'Momentos inesqueciveis'],
+  ['Segurança', 'Sua segurança é nossa prioridade'],
+  ['Experiência', 'Momentos inesquecíveis'],
 ] as const
 
 const notificationItems = [
@@ -62,8 +62,8 @@ const notificationItems = [
   },
   {
     id: 'checkout',
-    title: 'Check-out ate 12h',
-    description: 'Se precisar de check-out estendido, fale com a recepcao.',
+    title: 'Check-out até 12h',
+    description: 'Se precisar de check-out estendido, fale com a recepção.',
     icon: Clock3,
   },
 ]
@@ -156,7 +156,7 @@ function App() {
         text:
           typeof data?.message === 'string' && data.message.trim()
             ? data.message
-            : 'Nao encontrei essa informacao nos documentos da pousada. Para confirmar, fale com a recepcao pelo WhatsApp.',
+            : 'Não encontrei essa informação nos documentos da pousada. Para confirmar, fale com a recepção pelo WhatsApp.',
       }
 
       setChatMessages((current) => [...current, assistantMessage])
@@ -164,7 +164,7 @@ function App() {
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        text: 'Nao consegui consultar os documentos agora. Para ajuda imediata, fale com a recepcao pelo WhatsApp.',
+        text: 'Não consegui consultar os documentos agora. Para ajuda imediata, fale com a recepção pelo WhatsApp.',
       }
 
       setChatMessages((current) => [...current, assistantMessage])
@@ -195,14 +195,14 @@ function App() {
           </div>
 
           <div className="brand-block">
-            <img className="brand-logo" src={photos.logo} alt="Pousada Lusitania" />
-            <p className="guide-label">GUIA DO HOSPEDE</p>
+            <img className="brand-logo" src={photos.logo} alt="Pousada Lusitânia" />
+            <p className="guide-label">GUIA DO HÓSPEDE</p>
             <div className="ornament" />
           </div>
 
           <div className="hero-copy">
             <h1>Seja bem-vindo!</h1>
-            <p>Desejamos que sua estadia seja confortavel, tranquila e agradavel.</p>
+            <p>Desejamos que sua estadia seja confortável, tranquila e agradável.</p>
             <div className="ornament small" />
             <h2>Como podemos ajudar?</h2>
           </div>
@@ -229,8 +229,8 @@ function App() {
           }}
         >
           <div className="tour-copy">
-            <h3>Conheca a Pousada</h3>
-            <p>Explore nossos ambientes em uma experiencia imersiva 360°.</p>
+            <h3>Conheça a Pousada</h3>
+            <p>Explore nossos ambientes em uma experiência imersiva 360°.</p>
             <a href={links.tour} target="_blank" rel="noreferrer" className="gold-button">
               Iniciar Tour 360°
               <ChevronRight size={16} />
@@ -240,19 +240,19 @@ function App() {
         </section>
 
         <section className="content-wrap nav-grid">
-          <NavCard title="Acomodacoes" image={photos.room} href={links.acomodações} icon={<BedDouble size={18} />} />
+          <NavCard title="Acomodações" image={photos.room} href={links.acomodações} icon={<BedDouble size={18} />} />
           <NavCard title="Galeria" image={photos.gallery} href={links.galeria} icon={<Images size={18} />} />
           <NavCard title="Reservas" image={photos.reserves} href={links.reservas} icon={<CalendarDays size={18} />} />
           <NavCard title="Como Chegar" image={photos.map} href={links.maps} icon={<MapPinned size={18} />} />
         </section>
 
         <section className="content-wrap help-card">
-          <button className="help-icon" onClick={() => open(quickItems.find((item) => item.id === 'recepcao')!)} aria-label="Abrir recepcao">
+          <button className="help-icon" onClick={() => open(quickItems.find((item) => item.id === 'recepcao')!)} aria-label="Abrir recepção">
             <MessageCircle size={24} />
           </button>
           <div className="help-copy">
             <strong>Precisa de ajuda?</strong>
-            <p>Nossa equipe esta a disposicao para ajudar voce.</p>
+            <p>Nossa equipe está à disposição para ajudar você.</p>
           </div>
           <a href={links.whatsapp} target="_blank" rel="noreferrer" className="help-action">
             WhatsApp
@@ -294,7 +294,7 @@ function App() {
             <header className="notification-header">
               <div>
                 <p className="notification-eyebrow">Avisos</p>
-                <h3>Notificacoes da hospedagem</h3>
+                <h3>Notificações da hospedagem</h3>
               </div>
               <button
                 className="back-button"
@@ -423,7 +423,7 @@ function App() {
                 <ChevronLeft size={18} />
               </button>
               <div>
-                <h3>{selected.id === 'horarios' ? 'Horarios de Funcionamento' : selected.title}</h3>
+                <h3>{selected.id === 'horarios' ? 'Horários de Funcionamento' : selected.title}</h3>
                 <div className="ornament" />
               </div>
             </header>
@@ -441,7 +441,7 @@ function App() {
                 ))}
                 <div className="note-box">
                   <Info size={16} />
-                  <p>Horarios sujeitos a alteracoes. Em caso de duvidas, fale com a recepcao.</p>
+                  <p>Horários sujeitos a alterações. Em caso de dúvidas, fale com a recepção.</p>
                 </div>
               </div>
             )}
@@ -476,7 +476,7 @@ function App() {
                 <span className="contact-hero">
                   <Headset size={44} />
                 </span>
-                <p>Nossa equipe esta pronta para ajudar voce!</p>
+                <p>Nossa equipe está pronta para ajudar você!</p>
                 <a href={links.whatsapp} target="_blank" rel="noreferrer" className="whatsapp-button">
                   <MessageCircle size={18} />
                   Chamar no WhatsApp

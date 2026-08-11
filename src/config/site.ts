@@ -20,7 +20,7 @@ export const siteConfig = {
     horario: env.VITE_CHECKOUT || '12h',
     valorEstendido: env.VITE_CHECKOUT_ESTENDIDO_VALOR || 'R$ 45,00 por hora',
     regraEstendido:
-      env.VITE_CHECKOUT_ESTENDIDO_REGRA || 'Apos 16h, sera cobrado o valor de uma diaria adicional.',
+      env.VITE_CHECKOUT_ESTENDIDO_REGRA || 'Após 16h, será cobrado o valor de uma diária adicional.',
   },
   recepcao: {
     telefone: env.VITE_RECEPCAO_TELEFONE || '(27) 99855-2997',
@@ -29,10 +29,10 @@ export const siteConfig = {
 }
 
 export const scheduleItems = [
-  { label: 'Cafe da manha', time: siteConfig.horarios.cafeDaManha },
+  { label: 'Café da manhã', time: siteConfig.horarios.cafeDaManha },
   { label: 'Sala de TV', time: siteConfig.horarios.salaTv },
   { label: 'Piscina', time: siteConfig.horarios.piscina },
   { label: 'Sala de Jogos', time: siteConfig.horarios.salaJogos },
-  { label: 'Area da Piscina', time: siteConfig.horarios.areaPiscina },
+  { label: 'Área da Piscina', time: siteConfig.horarios.areaPiscina },
   { label: 'Sauna', time: siteConfig.horarios.sauna },
 ] as const

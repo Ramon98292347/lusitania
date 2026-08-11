@@ -19,7 +19,7 @@ export async function answerHotelChat(question: string) {
 
   return (
     response.output_text?.trim() ||
-    'Nao encontrei essa informacao nos documentos da pousada. Para confirmar, fale com a recepcao pelo WhatsApp.'
+    'Não encontrei essa informação nos documentos da pousada. Para confirmar, fale com a recepção pelo WhatsApp.'
   )
 }
 
@@ -53,34 +53,34 @@ function buildKnowledgeDocuments() {
   }).format(now)
 
   return [
-    `Data atual em Sao Paulo: ${currentDate}`,
-    `Hora atual em Sao Paulo: ${currentTime}`,
+    `Data atual em São Paulo: ${currentDate}`,
+    `Hora atual em São Paulo: ${currentTime}`,
     `Site oficial: ${process.env.VITE_URL_SITE || 'https://www.pousadalusitania.com.br/'}`,
     `Tour 360: ${process.env.VITE_URL_TOUR_360 || 'https://pousadalusitania.com.br/tour/'}`,
-    `Pagina de acomodacoes: ${process.env.VITE_URL_ACOMODACOES || 'https://www.pousadalusitania.com.br/acomodacoes.php'}`,
+    `Página de acomodações: ${process.env.VITE_URL_ACOMODACOES || 'https://www.pousadalusitania.com.br/acomodacoes.php'}`,
     `Galeria: ${process.env.VITE_URL_GALERIA || 'https://www.pousadalusitania.com.br/galeria.php#galeria'}`,
     `Reservas: ${process.env.VITE_URL_RESERVAS || 'https://sbreserva.silbeck.com.br/pousadalusitania/pt-br/'}`,
     `Como chegar: ${process.env.VITE_URL_MAPS || 'https://maps.app.goo.gl/CAsW67UawfFypt19A'}`,
-    `WhatsApp da recepcao: ${process.env.VITE_URL_WHATSAPP || 'https://wa.me/5527998552997'}`,
+    `WhatsApp da recepção: ${process.env.VITE_URL_WHATSAPP || 'https://wa.me/5527998552997'}`,
     `Wi-Fi rede: ${process.env.VITE_WIFI_REDE || 'Lusitania'}`,
     `Wi-Fi senha: ${process.env.VITE_WIFI_SENHA || '@lusitania'}`,
-    `Cafe da manha: ${process.env.VITE_CAFE_DA_MANHA || '07:30 as 10:00'}`,
+    `Café da manhã: ${process.env.VITE_CAFE_DA_MANHA || '07:30 as 10:00'}`,
     `Sala de TV: ${process.env.VITE_HORARIO_SALA_TV || '08:00 as 23:00'}`,
     `Piscina: ${process.env.VITE_HORARIO_PISCINA || '08:00 as 23:00'}`,
     `Sala de Jogos: ${process.env.VITE_HORARIO_SALA_JOGOS || '08:00 as 23:00'}`,
-    `Area da Piscina: ${process.env.VITE_HORARIO_AREA_PISCINA || '08:00 as 23:00'}`,
+    `Área da Piscina: ${process.env.VITE_HORARIO_AREA_PISCINA || '08:00 as 23:00'}`,
     `Sauna: ${process.env.VITE_HORARIO_SAUNA || '17:30 as 20:00'}`,
-    `Arrumacao: deixar a chave na recepcao ate as ${process.env.VITE_ARRUMACAO_LIMITE || '14h'}`,
-    `Check-out: ate as ${process.env.VITE_CHECKOUT || '12h'}`,
+    `Arrumação: deixar a chave na recepção até as ${process.env.VITE_ARRUMACAO_LIMITE || '14h'}`,
+    `Check-out: até as ${process.env.VITE_CHECKOUT || '12h'}`,
     `Check-out estendido: ${process.env.VITE_CHECKOUT_ESTENDIDO_VALOR || 'R$ 45,00 por hora'}`,
-    `Regra check-out estendido: ${process.env.VITE_CHECKOUT_ESTENDIDO_REGRA || 'Apos 16h, sera cobrado o valor de uma diaria adicional.'}`,
-    `Telefone da recepcao: ${process.env.VITE_RECEPCAO_TELEFONE || '(27) 99855-2997'}`,
-    `Horario da recepcao: ${process.env.VITE_RECEPCAO_ATENDIMENTO || '07:00 as 22:00'}`,
-    'Acomodacoes:',
+    `Regra check-out estendido: ${process.env.VITE_CHECKOUT_ESTENDIDO_REGRA || 'Após 16h, será cobrado o valor de uma diária adicional.'}`,
+    `Telefone da recepção: ${process.env.VITE_RECEPCAO_TELEFONE || '(27) 99855-2997'}`,
+    `Horário da recepção: ${process.env.VITE_RECEPCAO_ATENDIMENTO || '07:00 as 22:00'}`,
+    'Acomodações:',
     ...acomodacoes.map((item) =>
       [
         `- ${item.nome} (${item.tipo})`,
-        `  Descricao: ${item.descricaoCurta}`,
+        `  Descrição: ${item.descricaoCurta}`,
         `  Capacidade: ${item.capacidade}`,
         `  Comodidades: ${item.comodidades.join(', ')}`,
         `  Fonte: ${item.fonte}`,

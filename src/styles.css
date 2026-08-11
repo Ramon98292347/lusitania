@@ -1293,10 +1293,10 @@ a {
   }
 
   .service-card {
-    min-height: 200px;
-    height: 200px;
+    min-height: 240px;
+    height: auto;
     padding: 20px 18px 18px;
-    gap: 10px;
+    gap: 12px;
   }
 
   .service-icon {
@@ -1305,8 +1305,8 @@ a {
   }
 
   .service-card strong {
-    font-size: 28px;
-    line-height: 0.95;
+    font-size: 26px;
+    line-height: 1.02;
   }
 
   .service-card small {
@@ -1315,7 +1315,7 @@ a {
 
   .service-card p {
     font-size: 15px;
-    line-height: 1.18;
+    line-height: 1.22;
   }
 
   .content-wrap:has(.services-grid-top) {

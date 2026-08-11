@@ -1283,16 +1283,39 @@ a {
 
   .services-grid-top {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
     margin-top: 0;
   }
 
   .services-grid-bottom {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
   }
 
   .service-card {
-    min-height: 150px;
-    height: 150px;
+    min-height: 200px;
+    height: 200px;
+    padding: 20px 18px 18px;
+    gap: 10px;
+  }
+
+  .service-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .service-card strong {
+    font-size: 28px;
+    line-height: 0.95;
+  }
+
+  .service-card small {
+    font-size: 14px;
+  }
+
+  .service-card p {
+    font-size: 15px;
+    line-height: 1.18;
   }
 
   .content-wrap:has(.services-grid-top) {

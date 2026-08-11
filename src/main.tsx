@@ -75,6 +75,7 @@ function App() {
   const [showChat, setShowChat] = useState(false)
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(() => createInitialChatMessages())
   const [chatInput, setChatInput] = useState('')
+  const [chatBodyElement, setChatBodyElement] = useState<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -83,6 +84,15 @@ function App() {
 
     return () => window.clearInterval(timer)
   }, [])
+
+  useEffect(() => {
+    if (!showChat || !chatBodyElement) return
+
+    chatBodyElement.scrollTo({
+      top: chatBodyElement.scrollHeight,
+      behavior: 'smooth',
+    })
+  }, [chatMessages, showChat, chatBodyElement])
 
   const open = (item: GuideItem) => {
     setCopied(false)
@@ -294,7 +304,7 @@ function App() {
               </button>
             </header>
 
-            <div className="chat-messages">
+            <div className="chat-messages" ref={setChatBodyElement}>
               {chatMessages.map((message) => (
                 <article key={message.id} className={`chat-bubble chat-bubble-${message.role}`}>
                   {message.role === 'assistant' && (
@@ -505,7 +515,7 @@ function ChatMessageBody({ text }: { text: string }) {
           const url = urlMatch[0]
           return (
             <a key={`${line}-${url}`} href={url} target="_blank" rel="noreferrer" className="chat-link-button">
-              Abrir link
+              {getChatLinkLabel(line)}
               <ChevronRight size={16} />
             </a>
           )
@@ -515,6 +525,17 @@ function ChatMessageBody({ text }: { text: string }) {
       })}
     </div>
   )
+}
+
+function getChatLinkLabel(line: string) {
+  const normalized = line.toLowerCase()
+
+  if (normalized.includes('reserva')) return 'Fazer reserva'
+  if (normalized.includes('acomoda')) return 'Ver acomodações'
+  if (normalized.includes('galeria') || normalized.includes('foto')) return 'Ver galeria'
+  if (normalized.includes('chegar') || normalized.includes('mapa')) return 'Abrir mapa'
+  if (normalized.includes('whatsapp') || normalized.includes('recep')) return 'Chamar no WhatsApp'
+  return 'Abrir link'
 }
 
 createRoot(document.getElementById('root')!).render(

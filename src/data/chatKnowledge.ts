@@ -1,4 +1,5 @@
 import { links } from '../config/links'
+import { scheduleItems, siteConfig } from '../config/site'
 import { acomodacoes } from './accommodations'
 
 export type ChatMessage = {
@@ -21,17 +22,17 @@ Tom:
 - Respostas curtas, fáceis de ler no celular.
 
 Contexto principal:
-- Wi-Fi: rede Lusitania, senha @lusitania.
-- Café da manhã: 07:30 às 10:00.
-- Sala de TV: 08:00 às 23:00.
-- Piscina: 08:00 às 23:00.
-- Sala de Jogos: 08:00 às 23:00.
-- Área da Piscina: 08:00 às 23:00.
-- Sauna: 17:30 às 20:00.
-- Arrumação: o hóspede deve deixar a chave na recepção até as 14h.
-- Check-out: até as 12h.
-- Check-out estendido: R$ 45,00 por hora; após 16h cobra-se uma diária adicional, sujeito à disponibilidade.
-- Recepção: WhatsApp (27) 99855-2997, atendimento das 07:00 às 22:00.
+- Wi-Fi: rede ${siteConfig.wifi.rede}, senha ${siteConfig.wifi.senha}.
+- Café da manhã: ${siteConfig.horarios.cafeDaManha}.
+- Sala de TV: ${siteConfig.horarios.salaTv}.
+- Piscina: ${siteConfig.horarios.piscina}.
+- Sala de Jogos: ${siteConfig.horarios.salaJogos}.
+- Área da Piscina: ${siteConfig.horarios.areaPiscina}.
+- Sauna: ${siteConfig.horarios.sauna}.
+- Arrumação: o hóspede deve deixar a chave na recepção até as ${siteConfig.arrumacao.limite}.
+- Check-out: até as ${siteConfig.checkout.horario}.
+- Check-out estendido: ${siteConfig.checkout.valorEstendido}; ${siteConfig.checkout.regraEstendido}, sujeito à disponibilidade.
+- Recepção: WhatsApp ${siteConfig.recepcao.telefone}, atendimento das ${siteConfig.recepcao.atendimento}.
 - Reservas: ${links.reservas}
 - Acomodações: ${links.acomodações}
 - Galeria: ${links.galeria}
@@ -66,31 +67,31 @@ export function getAssistantReply(question: string): string {
   }
 
   if (hasAny(text, ['wifi', 'wi fi', 'internet', 'senha', 'wfi', 'interneti'])) {
-    return 'O Wi‑Fi da pousada é:\nRede: Lusitania\nSenha: @lusitania'
+    return `O Wi‑Fi da pousada é:\nRede: ${siteConfig.wifi.rede}\nSenha: ${siteConfig.wifi.senha}`
   }
 
   if (hasAny(text, ['cafe', 'cafe da manha', 'almoco', 'jantar', 'horario', 'horarios', 'horaro', 'horarois'])) {
-    return 'Horários principais:\nCafé da manhã: 07:30 às 10:00\nSala de TV: 08:00 às 23:00\nPiscina: 08:00 às 23:00\nSala de Jogos: 08:00 às 23:00\nSauna: 17:30 às 20:00'
+    return `Horários principais:\n${scheduleItems.map((item) => `${item.label}: ${item.time}`).join('\n')}`
   }
 
   if (hasAny(text, ['piscina', 'sauna', 'lazer', 'pisina', 'sana'])) {
-    return 'Lazer da pousada:\nPiscina: 08:00 às 23:00\nSauna: 17:30 às 20:00\nSe precisar, a recepção pode orientar durante a estadia.'
+    return `Lazer da pousada:\nPiscina: ${siteConfig.horarios.piscina}\nSauna: ${siteConfig.horarios.sauna}\nSe precisar, a recepção pode orientar durante a estadia.`
   }
 
   if (hasAny(text, ['arrumacao', 'limpeza', 'arrumar quarto', 'faxina', 'arumacao', 'arrumaçao'])) {
-    return 'Se desejar arrumação, deixe a chave na recepção até as 14h. A equipe realiza a limpeza conforme disponibilidade no mesmo dia.'
+    return `Se desejar arrumação, deixe a chave na recepção até as ${siteConfig.arrumacao.limite}. A equipe realiza a limpeza conforme disponibilidade no mesmo dia.`
   }
 
   if (hasAny(text, ['checkout', 'check out', 'saida', 'chekout', 'checkoute', 'sayda'])) {
     if (hasAny(text, ['estendido', 'late', 'tarde', 'estentido'])) {
-      return 'O check-out estendido custa R$ 45,00 por hora. A partir das 16h, é cobrado o valor de uma diária adicional. É importante confirmar disponibilidade com a recepção.'
+      return `O check-out estendido custa ${siteConfig.checkout.valorEstendido}. ${siteConfig.checkout.regraEstendido} É importante confirmar disponibilidade com a recepção.`
     }
 
-    return 'O check-out padrão é até as 12h. Se quiser check-out estendido, posso te explicar como funciona.'
+    return `O check-out padrão é até as ${siteConfig.checkout.horario}. Se quiser check-out estendido, posso te explicar como funciona.`
   }
 
   if (hasAny(text, ['whatsapp', 'recepcao', 'telefone', 'contato', 'atendimento', 'recepicao', 'recepsao', 'watsap'])) {
-    return `Você pode falar com a recepção pelo WhatsApp: (27) 99855-2997.\nAtendimento todos os dias das 07:00 às 22:00.\nLink direto: ${links.whatsapp}`
+    return `Você pode falar com a recepção pelo WhatsApp: ${siteConfig.recepcao.telefone}.\nAtendimento todos os dias das ${siteConfig.recepcao.atendimento}.\nLink direto: ${links.whatsapp}`
   }
 
   if (hasAny(text, ['reserva', 'reservar', 'diaria', 'diarias', 'reseva', 'resrva', 'resreva'])) {

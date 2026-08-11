@@ -20,6 +20,7 @@ import {
   Waves,
 } from 'lucide-react'
 import { links } from './config/links'
+import { scheduleItems, siteConfig } from './config/site'
 import { quickItems, type GuideItem } from './data/guideData'
 import {
   chatSuggestions,
@@ -41,15 +42,6 @@ const photos = {
 
 const cardsTop = quickItems.slice(0, 3)
 const cardsBottom = quickItems.slice(3)
-
-const scheduleItems = [
-  { label: 'Cafe da manha', time: '07:30 as 10:00' },
-  { label: 'Sala de TV', time: '08:00 as 23:00' },
-  { label: 'Piscina', time: '08:00 as 23:00' },
-  { label: 'Sala de Jogos', time: '08:00 as 23:00' },
-  { label: 'Area da Piscina', time: '08:00 as 23:00' },
-  { label: 'Sauna', time: '17:30 as 20:00' },
-]
 
 const bottomBenefits = [
   ['Conforto', 'Ambientes acolhedores'],
@@ -100,7 +92,7 @@ function App() {
 
   const copyPassword = async () => {
     try {
-      await navigator.clipboard.writeText('@lusitania')
+      await navigator.clipboard.writeText(siteConfig.wifi.senha)
       setCopied(true)
     } catch {
       setCopied(false)
@@ -385,9 +377,9 @@ function App() {
                   <selected.icon size={44} />
                 </span>
                 <p>Rede Wi-Fi</p>
-                <h4>Lusitania</h4>
+                <h4>{siteConfig.wifi.rede}</h4>
                 <p>Senha</p>
-                <h5>@lusitania</h5>
+                <h5>{siteConfig.wifi.senha}</h5>
                 <button className="copy-button" onClick={copyPassword}>
                   <Copy size={16} />
                   Copiar senha
@@ -416,11 +408,11 @@ function App() {
                 </a>
                 <div className="phone-box">
                   <Phone size={18} />
-                  <span>(27) 99855-2997</span>
+                  <span>{siteConfig.recepcao.telefone}</span>
                 </div>
                 <div className="note-box soft">
                   <Info size={16} />
-                  <p>Atendimento todos os dias das 07:00 as 22:00.</p>
+                  <p>{`Atendimento todos os dias das ${siteConfig.recepcao.atendimento}.`}</p>
                 </div>
               </div>
             )}
